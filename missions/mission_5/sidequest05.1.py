@@ -8,6 +8,7 @@
 
 from hi_graph import *
 from math import pi
+from mission05 import connect_ends
 
 ##########
 # Task 1 #
@@ -23,15 +24,14 @@ from math import pi
 def spiral(t):
     return make_point(sin(2*pi*t)*t, cos(2*pi*t)*t)
 
+def spiral_opp(t):
+    return make_point(sin(2*pi*t)*-t, cos(2*pi*t)*t)
+
 # draw_connected_scaled(1000, spiral)
+# draw_connected_scaled(1000, spiral_opp)
 
 # (b)
 def heart(t):
-    curve1 = scale(0.5)(spiral)(t)
-    curve2 = spiral(t)
-    curve2 = (revert(curve2))(t)
-    curve2 = rotate(pi/2)(curve2)(t)
-    combined = connect_rigidly(curve1, curve2)
-    return curve2
+    return connect_rigidly(spiral, spiral_opp)(t)
 
-draw_connected_scaled(1000, heart)
+draw_connected_scaled(200, heart)
