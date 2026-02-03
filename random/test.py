@@ -1,3 +1,84 @@
+
+
+
+""" #--- TOWERS OF HANOI TUPLE ---#
+def hanoi(n, src, dsc, aux):
+    moves = ()
+    if n == 0:
+        return moves
+    else:
+        moves += hanoi(n-1, src, aux, dsc)
+        moves += ((src,dsc),)
+        moves += hanoi(n-1, aux, dsc, src)
+    return moves
+# print(hanoi(3, 1, 2, 3))
+"""
+""" #--- TUPLE RECURSION ---#
+def count_leaves(tree):
+    if tree == ():
+        return 0
+    elif is_leaf(tree):
+        return 1
+    else:
+        return count_leaves(tree[0]) + count_leaves(tree[1:])
+
+def is_leaf(n):
+    if type(n) != tuple:
+        return True
+
+x = ((1, 2), ((3, 4), (5, (6, 7), (8, 9))), (10, (11, 12)), (13, (14,), (16,), 17, 18, (19, 20)))
+print(count_leaves(x))
+"""
+""" #--- TUPLE MANIPULATION II---#
+def copy_tree(tree):
+    new_tree = ()
+    # base case 1: if all elem are int return copy of tree
+    for i in range(len(tree)):
+        if type(tree[i]) != tuple:
+            new_tree += (tree[i],)
+        else:
+            new_tree += (copy_tree(tree[i]),)
+    return new_tree
+
+# Do not remove this line
+original = (1,(2,3),4)
+print(copy_tree(original))
+"""
+""" #--- TUPLE MANIPULATION ---#
+def accumulate(fn, initial, seq):
+    if seq == ():
+        return initial
+    else:
+        return fn(seq[0],  accumulate(fn, initial, seq[1:]))
+
+# print(accumulate(lambda x,y:(x, y), (), (1, 2, 3)) )
+
+def map(fn, seq):
+    if seq == ():
+        return ()
+    else:
+        return (fn(seq[0]), ) + map(fn, seq[1:])
+    
+def filter(pred, seq):
+    if seq == ():
+        return ()
+    elif pred(seq[0]):
+        return (seq[0],) + filter(pred, seq[1:])
+    else:
+        return filter(pred, seq[1:])
+    
+minus = lambda x,y: x - y 
+is_odd = lambda x: x%2 == 1 
+square = lambda x: x**2 
+# print(accumulate(minus, 0,  map(square, filter(is_odd, tuple(range(6))))))
+
+def to_str(tup):
+    # your code here
+    return accumulate(lambda x, y: str(x) + str(y), '', tup)
+
+# print(to_str(('c', 's', 1, 0, 1, 0, 's')))
+"""
+""" #--- LIST MANIPULATION ---#
 def common(lst1, lst2):
     result = []
     if len(lst1) > len(lst2):
@@ -15,13 +96,7 @@ print(common(['love', 'makes', 'world', 'better'], ['hello', 'world']))
 print(common([], ['happy', 'holiday']))
 print(common(['happy', 'holiday'], []))
 print(common(['cheese', 'steak', 'sandwich'], ['chicken', 'tikka', 'pizza']))
-      
-
-
-
-#---- TEST CASES ----#
-
-
+"""
 """#--- TUPLES ---#
 def change_value_at_index(tpl, index, value):
     # Your code here
