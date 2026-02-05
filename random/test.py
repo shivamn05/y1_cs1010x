@@ -1,6 +1,86 @@
 
 
+""" #--- SORTING: MERGE SORT ---#
+def merge_lists(list1, list2):
+    merged_list = []
+    while list1 and list2:
+        if list1[0] > list2[0]:
+            merged_list.append(list1[0])
+            list1.remove(list1[0])
+        else:
+            merged_list.append(list2[0])
+            list2.remove(list2[0])
+    merged_list.extend(list1)
+    merged_list.extend(list2)
+    return merged_list
 
+print(merge_lists([6, 4, 2, 1], [5, 3]))
+"""
+""" #--- SORTING: SELECTION SORT
+def sort_age(lst):
+    sorted = []
+    unsorted = lst.copy()
+    while unsorted:
+        biggest = unsorted[0]
+        for element in unsorted[1:]:
+            if element[1] > biggest[1]:
+                biggest = element
+        unsorted.remove(biggest)
+        sorted.append(biggest)
+    return sorted
+
+print(sort_age([("F", 18), ("M", 23), ("F", 19), ("M", 30)]))
+
+def sort_by_gender_then_age(lst):
+    males = []
+    females = []
+    for elem in lst:
+        if elem[0] == 'M':
+            males.append(elem)
+        else:
+            females.append(elem)
+    males = sort_age(males)
+    females = sort_age(females)
+    return males + females 
+"""
+""" #--- LIST FLATTENING ---#
+def flatten_list(lst):
+    flat_list = []
+    for i in range(len(lst)):
+        if type(lst[i]) != list:
+            flat_list.append(lst[i])
+        else:
+            flat_list += flatten_list(lst[i])
+    return flat_list
+
+
+def count_occurrences(lst, num):
+    flat_lst = flatten_list(lst)
+    count = 0
+    for i in range(len(flat_lst)):
+        if flat_lst[i] == num:
+            count += 1
+    return count
+    
+# print(count_occurrences([[], [[]], [[[]]], [[[[]]]]], 2))
+"""
+""" #--- REMOVING FROM LIST WITHOUT MAKING A NEW LIST ---#
+def remove_extras(lst):
+    # your code here
+    lst.sort()
+    remove = []
+    for i in range(len(lst)-1):
+        if lst[i]==lst[i+1]:
+            remove.append(lst[i])
+    for j in range(len(remove)):
+        if remove[j] in lst:
+            lst.remove(remove[j])
+    return lst
+
+lst2 = [2, 2, 2, 1, 5, 4, 4]
+lst1 = [1, 5, 1, 1, 3]
+# print(remove_extras(lst1))
+"""
 """ #--- TOWERS OF HANOI TUPLE ---#
 def hanoi(n, src, dsc, aux):
     moves = ()
