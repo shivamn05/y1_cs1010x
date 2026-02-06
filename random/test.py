@@ -1,5 +1,125 @@
 
+""" #--- DOUBLE SORTING: SCORE AND NAME ---#
+def top_k(students, k):
+    # sort by score
+    students.sort(key= lambda student: student[2], reverse=True)
 
+    # extract top k 
+    top = students[:k]
+
+    # check if (k+1)th student score is same as kth student score
+    for i in range(k, len(students)):
+        if students[i][2] == top[k-1][2]:
+            top.append(students[i])
+    
+    # sort the top students by number, by alphabet 
+    for j in range(len(top)-1):
+        if top[j][2] == top[j+1][2] and top[j][0] > top[j+1][0]:
+            top[j], top[j+1] = top[j+1], top[j]
+    return top
+
+
+### DO NOT MODIFY THIS ###
+students = [('tiffany', 'A', 15), 
+            ('jane', 'B', 10),
+            ('ben', 'C', 8), 
+            ('eugene', 'A', 21),
+            ('simon', 'A', 21), 
+            ('john', 'A', 15), 
+            ('jimmy', 'F', 1), 
+            ('charles', 'C', 9), 
+            ('freddy', 'D', 4), 
+            ('dave', 'B', 12),
+            ('tester','B', 12)]
+
+print(top_k(students, 5))
+"""
+""" #--- Counting mode ---#
+def mode_score(students):
+    # Extracting just the grade scores from students
+    grades = []
+    for i in range(len(students)):
+        grades.append(students[i][2])
+
+    # Counting the number of times a number appears
+    grade_count = {}
+    for j in grades:
+        if j not in grade_count:
+            grade_count.update({j:1})
+        else:
+            grade_count[j] = grade_count[j] + 1
+    # Sorting by value into a list modal
+    modal = []
+    for k, v in sorted(grade_count.items(), key=lambda item: item[1]):
+        modal.append([k,v])
+    modal.sort(key=lambda modal: modal[1], reverse=True)
+    
+    # Returning the modal value(s)
+    final = [modal[0][0]]
+    for x in range(1, len(modal)-1):
+        if modal[x][1] == modal[0][1]:
+            final.append(modal[x][0])
+    return final
+
+
+### DO NOT MODIFY THIS ###
+students = [('tiffany', 'A', 15), 
+            ('jane', 'B', 10),
+            ('ben', 'C', 8), 
+            ('simon', 'A', 21), 
+            ('eugene', 'A', 21), 
+            ('john', 'A', 15), 
+            ('jimmy', 'F', 1), 
+            ('charles', 'C', 9), 
+            ('freddy', 'D', 4), 
+            ('dave', 'B', 12),
+            ('q','B',15)]
+
+print(mode_score(students))
+"""
+""" #--- TRANSPOSE A MATRIX ---#
+def transpose(matrix):
+    non_row = len(matrix)
+    for col in range(len(matrix[0])):
+        temp_row = []
+        for row in range(non_row):
+            temp_row.append(matrix[row][col])
+        matrix.append(temp_row)
+    for _ in range(non_row):
+        matrix.pop(0)
+    return matrix
+
+### DO NOT MODIFY THIS ###
+matrix1 = [[ 1, 2, 3], [4, 5, 6], [7, 8, 9]]
+matrix2 = [[ 1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]
+matrix3 = [[1, 2, 3]]
+print(transpose(matrix2))
+"""
+""" #--- COL SUM OF MATRIX ---#
+def col_sum(matrix):
+    sum_list = matrix[0]
+    for row in range(1, len(matrix)):
+        for col in matrix[row]:
+            hold = col + sum_list[0]
+            sum_list.pop(0)
+            sum_list.append(hold)
+    return sum_list
+
+# print(col_sum([[1,2],[3,4],[5,6]]))
+"""
+""" #--- ROW SUM OF MATRIX ---#
+def row_sum(matrix):
+    sum_list = []
+    summation = 0
+    for row in matrix:
+        for i in row:
+            summation += i
+        sum_list.append(summation)
+        summation = 0
+    return sum_list
+
+# print(row_sum([[ 1, 2, 3], [4, 5, 6], [7, 8, 9]]))
+"""
 """ #--- SORTING: MERGE SORT ---#
 def merge_lists(list1, list2):
     merged_list = []
