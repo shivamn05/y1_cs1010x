@@ -274,7 +274,7 @@ def parse_events_in_line(data_file, line):
 
         # make and add the train position to events 
         position = make_train_position(is_bool, start_stn, stop_stn)
-        events += (make_schedule_event((train_code,), position, dtg),)
+        events += (make_schedule_event(make_train(train_code), position, dtg),)
     return events
 
 # UNCOMMENT THE CODE BELOW WHEN YOU ARE DONE WITH TASK 2B. THIS IS NOT OPTIONAL TESTING!
@@ -300,8 +300,12 @@ def is_valid_event_in_line(bd_event, line):
     # Extract dtg 
     dtg = get_schedule_time(bd_event)
     # Get the station code 
-    start_stn = get_station_code(get_train_position(bd_event)[1])
-    stop_stn = get_station_code(get_train_position(bd_event)[2])
+    pos = get_train_position(bd_event)
+    if get_is_moving(pos):
+        start_stn = get_station_code(get_previous_station(pos))
+    else:
+        start_stn = get_station_code(get_stopped_station(pos))  
+    stop_stn = get_station_code(get_next_station(pos))
     # Get position in line 
     start = get_station_position(line, start_stn)
     stop = get_station_position(line, stop_stn)
@@ -333,23 +337,29 @@ VALID_BD_EVENTS = get_valid_events_in_line(BD_EVENTS, CCL)
 #############
 
 def get_location_id_in_line(bd_event, line):
-    # Get start station code 
-    start_stn = get_station_code(get_train_position(bd_event)[1])
-    # Get position in line 
-    start = get_station_position(line, start_stn)
-    if get_is_moving(get_train_position(bd_event)):
-        if get_direction(line, get_train_position(bd_event)) == 0:
-            return start + 0.5
+    # get pos of train
+    pos = get_train_position(bd_event)
+
+    if get_is_moving(pos):
+        start = get_previous_station(pos)
+        start_code = get_station_code(start)
+        start_pos = get_station_position(line, start_code)
+
+        if get_direction(line, pos) == 0:
+            return start_pos + 0.5
         else:
-            return start - 0.5 
-    return start 
+            return start_pos - 0.5
+    else:
+        stop = get_stopped_station(pos)
+        stop_code = get_station_code(stop)
+        return get_station_position(line, stop_code)
 
 # UNCOMMENT THE CODE BELOW TO TEST YOUR TASK 3B
 # print("## Task 3b ##")
 test_loc_id1 = get_location_id_in_line(test_bd_event1, CCL)
 test_loc_id2 = get_location_id_in_line(test_bd_event2, CCL)
-# print(test_loc_id1)
-# print(test_loc_id2)
+print(test_loc_id1)
+print(test_loc_id2)
 
 # Expected Output #
 # 2.5
