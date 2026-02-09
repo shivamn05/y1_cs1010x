@@ -1,4 +1,66 @@
 
+""" #--- DATA TYPE: STACK ---#
+def make_stack(seq):
+    return list(seq)
+
+def make_empty_stack():
+    return make_stack(())
+
+def is_empty_stack(stack):
+    return stack == make_empty_stack()
+
+def push_stack(stack, item):
+    stack.append(item)
+    return stack
+
+def pop_stack(stack):
+    if is_empty_stack(stack):
+        return None
+    else:
+        location = len(stack) -1
+        popped = stack[location]
+        stack.pop(location)
+        return popped
+
+def peek_stack(stack):
+    if is_empty_stack(stack) == True:
+        return None
+    else:
+        loc = len(stack) -1
+        return stack[loc]
+    
+def clear_stack(stack):
+    # modifies the stack to be empty and returns the stack
+    while stack:
+        stack.pop()
+    return stack
+
+def operation(oper, int1, int2):
+    if oper == '+':
+        return int2 + int1
+    elif oper == '-':
+        return int2 - int1
+    elif oper == '*':
+        return int2 * int1
+    elif oper == '/':
+        return int2 / int1
+
+def calculate(inputs):
+    # check if input is a single integer, return int if True
+    if len(inputs) == 1 and type(inputs[0]) == int:
+        return inputs[0]
+    else:
+        numbers = make_empty_stack()
+        for elem in inputs:
+            if type(elem) == int:
+                push_stack(numbers, elem)
+            else:
+                int1 = pop_stack(numbers)
+                int2 = pop_stack(numbers)
+                new = operation(elem, int1, int2)
+                push_stack(numbers, new)
+        return int(pop_stack(numbers))
+"""
 """ #--- DOUBLE SORTING: SCORE AND NAME ---#
 def top_k(students, k):
     # sort by score
