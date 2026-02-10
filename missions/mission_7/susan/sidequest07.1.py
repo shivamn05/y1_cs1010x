@@ -54,9 +54,9 @@ def solve_trivial_4(table):
     return check_solved(table)
 
 # test:
-t4_2 = create_table(4)
-solve_trivial_4(t4_2)
-print(check_solved(t4_2))
+# t4_2 = create_table(4)
+# solve_trivial_4(t4_2)
+# print(check_solved(t4_2))
 
 
 ########################################################
@@ -165,31 +165,52 @@ def solve_4(table):
 # Task 5 #
 ##########
 
+def pattern(lis):
+    length = len(lis)
+    for i in range(length):
+        lis += [tuple(list(lis[i]) + [0]*length)] #duplicate the "1" down and forms "0" beside it
+        lis[i] = tuple(lis[i]*2) #duplicate original "1" to its right
+    return lis
+
+def diff_pat(lis, n):
+    if n == 1:
+        return [lis[n]]
+    return diff_pat(lis, n-1) + [lis[n]] + diff_pat(lis, n-1)
+
 def solve(table):
     size = get_table_size(table)
-    if size == 2:
-        solve_2(table)
-    else:
-        n = int(log10(size) / log10(2))
-        A = (1,0,1,0) * (n-1)
-        B = (1,1,0,0) * (n-1)
-        C = (1,0,0,0) * (n-1)
-        D = (1,1,1,1) + (0,0,0,0) * (n-2)
-        base_moves = [A,B,A,C,A,B,A]
-
+    n = int(log10(size) / log10(2))
+    A = (1,1)
+    B = (1,0)
+    if n == 1:
+        if check_solved(table) == False:
+            flip_coins(table, B)
+        return check_solved(table)
+    moves = [A, B]
+    for _ in range(n-1):
+        moves = pattern(moves)
+    #use the other pattern
+    #for curr in moves:
+        #print(str(curr) + "\n")
+    order = diff_pat(moves,len(moves)-1)
+    for move in order:
+        flip_coins(table, move)
+        if check_solved(table) == True:
+            break
     return check_solved(table)
 
+
 # test:
-t4_5 = create_table(4)
-solve(t4_5)
-print(check_solved(t4_5))
+# t4_5 = create_table(4)
+# solve(t4_5)
+# print(check_solved(t4_5))
 
 # t8_5 = create_table(8)
 # solve(t8_5)
 # print(check_solved(t8_5))
 
-# t16_5 = create_table(16)
-# solve(t16_5)
-# print(check_solved(t16_5))
+t16_5 = create_table(16)
+solve(t16_5)
+print(check_solved(t16_5))
 
 # Note: It is not advisable to execute run() if the table is large.
