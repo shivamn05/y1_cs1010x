@@ -1,4 +1,24 @@
 
+""" #--- *args notation ---#
+def sum_all(*args):
+    return sum(args)
+
+print(sum_all(1,2,3,4,5))
+"""
+""" #--- DICT handling: increase value by one of nested dicts ---#
+def increase_by_one(d):
+    for key in d:
+        if type(d[key]) == dict:
+            increase_by_one(d[key])
+        else:
+            d[key] += 1
+    return d
+    
+print(increase_by_one({'first':27, 'second':16, 'third':8}))
+print(increase_by_one({'1':2.7, '11':16, '111':{'a':5, 't':8}}))
+print(increase_by_one({2:{ }, 3:{ }, 4:{ }}))
+print(increase_by_one({'a':{'b':{'c':10}}}))
+"""
 """ #--- DATA TYPE: STACK ---#
 def make_stack(seq):
     return list(seq)
