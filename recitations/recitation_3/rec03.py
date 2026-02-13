@@ -1,5 +1,5 @@
 # QUESTION 1 # 
-# a) 12
+# a) 12 oops it is 17 lah you just never read the g(y)+y
 # b) 18 
 # c) 4
 # d) 16
@@ -63,6 +63,7 @@ def sum_iter(term, a, next, b):
         i = next(i)
     return final
 
+# Time complexity depends on the next function, may not be O(n)
 
 # Question 8 #
 def fold_iter(op, f, n):
