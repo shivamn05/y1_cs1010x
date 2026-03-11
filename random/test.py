@@ -1,5 +1,36 @@
 
+""" #--- QUEUE ---#
+def make_queue():
+    return []
 
+def enqueue(q, item):
+    q.append(item)
+    return q 
+
+def dequeue(q):
+    return q.pop(0)
+    
+def size(q):
+    return len(q)
+    
+### DO NOT MODIFY BEYOND THIS LINE!
+q = make_queue()
+enqueue(q, 1)
+enqueue(q, 5)
+dequeue(q)
+
+def who_wins(m, players):
+    if len(players) < m+1:
+        return players[1:]
+    else:
+        players.pop(m) # pop player that died
+        before = players[:m]
+        players = players[m:] + before # add the players to the end of the list
+        return who_wins(m, players)
+
+print(who_wins(3, ['val', 'hel', 'jam', 'jin', 'tze', 'eli', 'zha', 'lic']))
+print(who_wins(2, ['poo', 'ste', 'sim', 'nic', 'luo', 'ibr', 'sie', 'zhu']))
+"""
 """ #--- TUTORIAL 7: ACCUMULATE AND LIST ---#
 def transpose(m):
     trp_m = []
