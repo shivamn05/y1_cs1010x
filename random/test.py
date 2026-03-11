@@ -1,4 +1,97 @@
 
+
+""" #--- TUTORIAL 7: ACCUMULATE AND LIST ---#
+def transpose(m):
+    trp_m = []
+    for col in range(len(m[0])):
+        temp = []
+        for row in range(len(m)):
+            temp.append(m[row][col])
+        trp_m.append(temp)
+    return trp_m
+
+def row_sum(m):
+    # Fill in your answers here
+    return accumulate_n(lambda x,y: x+y, 0, transpose(m))
+
+
+def accumulate(op, init, seq):
+    if not seq:
+        return init
+    else:
+        return op(seq[0], accumulate(op, init, seq[1:]))
+
+def accumulate_n(op, init, sequences):
+    if (not sequences) or (not sequences[0]):
+        return type(sequences)()
+    else:
+        return ( [accumulate(op, init, list((map(lambda x: x[0], sequences))))]
+               + accumulate_n(op, init, list((map(lambda x: x[1:], sequences)))))
+
+def count_sentence(sentence):
+    # number of words 
+    words = len(sentence)
+    # number of letters
+    letters = accumulate(lambda x,y: len(x)+y, # add 1 for every letter
+                         words-1, # initial is the number of spaces
+                         sentence # letters as the input 
+                        )
+    return [words, letters]
+
+test = count_sentence([['C', 'S', '1', '0', '1', '0', 'S'], ['R', 'o', 'c', 'k', 's']])
+# print(test)
+
+def letter_count(sentence):
+    all_letters = []
+    for word in sentence:
+        for letter in word:
+            found = False
+            for pair in all_letters:
+                if letter == pair[0]:
+                    pair[1] += 1
+                    found = True
+            if not found:
+                all_letters.append([letter, 1])        
+    return all_letters
+
+# Order of growth?: O(n)
+
+test1 = [['C', 'S', '1', '0', '1', '0', 'S'], ['R', 'o', 'c', 'k', 's']]
+test2 = ['C','C','C']
+test3 = [['P', 'y', 't', 'h', 'o', 'n'], ['i', 's'], ['c', 'o', 'o', 'l']]
+test4 = [['s', 'h', 'e'], ['l', 'i', 'k', 'e', 's'],['p', 'i', 'e', 's']]
+
+def most_frequent_letters(sentence):
+    if sentence == []:
+        return []
+    tally = sorted(letter_count(sentence), key=lambda x: x[1], reverse=True) # time : nlogn
+    freq = []
+    most_freq = tally[0][1]
+    for pair in tally: # time: n
+        if pair[1] == most_freq:
+            freq.append(pair[0])
+        else:
+            break
+    return freq
+# Order of growth?: Time: O(n logn) Space: O(n) where n is the number of letters 
+print(most_frequent_letters(test3))
+
+def most_frequent_letters1(sentence):
+    if sentence == []:
+        return []
+    tally = letter_count(sentence)
+    freq = []
+    most_freq = tally[0][1]
+    for pair in tally: 
+        if pair[1] >= most_freq:
+            most_freq = pair[1]
+    for pair in tally:
+        if pair[1] == most_freq:
+            freq.append(pair[0])
+    return freq
+print(most_frequent_letters1(test3))
+# Order of growth?: Time: O(n) Space: O(n) where n is the number of letters 
+"""
 """ #--- *args notation ---#
 def sum_all(*args):
     return sum(args)
