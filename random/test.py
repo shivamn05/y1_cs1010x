@@ -1,4 +1,146 @@
 
+""" #--- Tutorial 8: function call counting, nested fns ---#
+def make_accumulator():
+    total = 0
+    def accumulator(x):
+        nonlocal total  # need to specify that total is from make_acc
+        total += x
+        return total 
+    return accumulator
+    
+### DO NOT MODIFY THIS ###
+A = make_accumulator()
+B = make_accumulator()
+# print(A(10))
+# print(A(10))
+
+def make_monitored(f):
+    count = 0
+    def mf(msg):
+        nonlocal count
+        if msg == "how-many-calls?":
+            return count
+        elif msg == "reset-count":
+            count = 0
+        else:
+            count += 1
+            return f(msg)
+    return mf
+    
+### DO NOT MODIFY THIS ###
+def double(x):
+    return 2 * x
+
+# d = make_monitored(double)
+# print(d(1))
+# print(d("how-many-calls?"))
+# print(d("reset-count"))
+# print(d("how-many-calls?"))
+
+def make_monitored_extended(f):
+    count = 0
+    def mf(*args):
+        nonlocal count
+        # len checking is needed jic f takes in no arguments
+        if len(args)==1 and args[0] == "how-many-calls?":
+            return count
+        elif len(args)==1 and args[0] == "reset-count":
+            count = 0
+        else:
+            count += 1
+            return f(*args)
+    return mf
+ 
+### DO NOT MODIFY THIS ###
+def sum_numbers(*numbers):
+    s = 0
+    for n in numbers:
+        s = s + n
+    return s
+
+monitored_sum_numbers = make_monitored_extended(sum_numbers)
+# print(monitored_sum_numbers(1,2,3))
+# print(monitored_sum_numbers("how-many-calls?"))
+# print(monitored_sum_numbers(1,2,3,4,5))
+
+import math
+import random
+
+def make_monte_carlo_integral(P,x1,y1,x2,y2):
+    count = 0
+    estimate = 0
+    def mci(*args):
+        nonlocal count, estimate
+        if len(args) == 1 and args[0] == "trials":
+            return count
+        elif len(args) == 2 and args[0] == "run trials":
+            count += args[1]
+            inside = 0
+            total = args[1]
+            for _ in range(args[1]):
+                # getting random x and y values in range
+                x = random.uniform(x1, x2)
+                y = random.uniform(y1, y2)
+                # testing if it is inside or outside the circle
+                if P(x,y) == True:
+                    inside += 1
+            # ratio of inside to total * area of rectangle approx circle area
+            rect_area = (x2-x1) * (y2-y1)
+            estimate = (inside / total) * rect_area 
+        elif len(args) == 1 and args[0] == "get estimate":
+            return estimate
+    return mci
+
+def circle(x,y):
+    return math.sqrt(x*x+y*y) < 1
+
+circle_estimate = make_monte_carlo_integral(circle,-1,-1,1,1)
+# circle_estimate("run trials", 1000)
+# print(circle_estimate("trials"))
+# print(circle_estimate("get estimate"))
+# circle_estimate("run trials", 10000)
+# print(circle_estimate("trials"))
+# print(circle_estimate("get estimate"))
+
+def translate(source,destination,string):
+    if source == "" and destination == "":
+        return string
+    # source key, destination value
+    translator = {}
+    for i in range(len(source)):
+        translator[source[i]] = destination[i]
+    # editing the string 
+    for letter in string:
+        for pair in translator:
+            if pair[0] == letter:
+                string = string.replace(letter, translator[pair])
+            else:
+                continue
+    return string
+
+test1 = translate("dikn","lvei","My tutor IS kind")
+test2 = translate("(hrd",")esy","CODING is hard :(")
+test3 = translate("","","CS1010S is awesome!!!")
+
+def caesar_cipher(shift,string):
+    if string == "":
+        return ""
+    # get the destination using ASCII values
+    destination = ""
+    for letter in string:
+        # for lowercase 
+        if letter.islower():
+            new_ascii = (ord(letter) - ord("a") + shift) % 26 + ord("a")
+            destination += chr(new_ascii)
+        if letter.isupper():
+            new_ascii = (ord(letter) - ord("A") + shift) % 26 + ord("A")
+            destination += chr(new_ascii)
+    return destination
+
+test4 = caesar_cipher(10,"abcd")
+test5 = caesar_cipher(25,"aAbB")
+print(test5)
+"""
 """ #--- QUEUE ---#
 def make_queue():
     return []
