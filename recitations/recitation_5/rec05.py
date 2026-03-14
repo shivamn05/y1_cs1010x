@@ -59,7 +59,7 @@ a(i) 1.5
 a(ii) 1 / 6
 a(iii) (1, (2, (3, ())))
 a(iv) ((((),1),2),3)
-b) fn should be a commutative operation
+b) fn should be a commutative and associative operation
 """
 def fold_right(fn, initial, seq):
     if seq == ():
@@ -156,7 +156,7 @@ def even_fold(x):
                       (), 
                       filter(is_even, x)
                       )
-print(even_fold(x))
+# print(even_fold(x))
 
 # e)
 def even_fold_left(x):
